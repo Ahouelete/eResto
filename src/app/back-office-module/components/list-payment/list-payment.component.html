@@ -1,0 +1,72 @@
+<div class="container-list-users">
+  <p><i class="fa fa-credit-card"></i> LISTE DES PAIEMENTS</p>
+  <div class="list-user">
+    <div class="header">
+      <span>Liste des paiemnts</span>
+      <span>Consulter la liste des paiemnts</span>
+    </div>
+    <div class="filter-orders">
+      <a
+        class=""
+        [ngClass]="{ 'link-active': status_payment == 'TOUS' }"
+        (click)="filterPayment('TOUS')"
+        >Tous</a
+      >
+      <a
+        class=""
+        (click)="filterPayment('VALIDER')"
+        [ngClass]="{ 'link-active': status_payment == 'VALIDER' }"
+        >Paiements validés</a
+      >
+      <a
+        class=""
+        (click)="filterPayment('ANNULER')"
+        [ngClass]="{ 'link-active': status_payment == 'ANNULER' }"
+        >Paiements annulés</a
+      >
+      <a
+        class=""
+        (click)="filterPayment('PENDING')"
+        [ngClass]="{ 'link-active': status_payment == 'PENDING' }"
+        >Paiements en attente</a
+      >
+    </div>
+    <p-table [value]="payments" responsiveLayout="scroll" [loading]="loading">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>#</th>
+          <th>Méthode de paiement</th>
+          <th>Montant</th>
+          <th>Devis</th>
+          <th>Status</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-payment let-rowIndex="rowIndex">
+        <tr>
+          <td>{{ rowIndex + 1 }}</td>
+          <td>{{ payment.transaction.paymentMethod }}</td>
+          <td>{{ payment.transaction.amount }}</td>
+          <td>{{ payment.transaction.currency }}</td>
+          <td>
+            <span
+              [ngClass]="{
+                'card-error':
+                  payment.paymentStatus == 'FAILED' ||
+                  payment.paymentStatus == 'REFUNDED',
+                'card-success': payment.paymentStatus == 'SUCCESS',
+                'card-pending': payment.paymentStatus == 'PENDING'
+              }"
+              >{{ payment.paymentStatus }}</span
+            >
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <p-paginator
+      [rows]="pageSize"
+      [totalRecords]="totalRecords"
+      [rowsPerPageOptions]="[10, 20, 30]"
+      (onPageChange)="paginate($event)"
+    ></p-paginator>
+  </div>
+</div>

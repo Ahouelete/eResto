@@ -1,0 +1,128 @@
+<div class="container-list-users">
+  <p><i class="fa fa-th-large"></i> GESTION DES MENUS</p>
+  <div class="user-form">
+    <form [formGroup]="menuForm">
+      <div class="header">
+        <span>Enregistrer un menu</span>
+        <span>Ajouter ou modifier un menu</span>
+      </div>
+      <div class="row">
+        <div class="col-md-12 col-12">
+          <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Date du menu</mat-label>
+            <input
+              matInput
+              placeholder="Désignation"
+              type="date"
+              formControlName="localDate"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="header">
+          <span>Sélectionner les repas</span>
+          <span
+            >Cochez les repas qui entrent dans la composition de ce menu</span
+          >
+        </div>
+        <div class="col-md-12 col-12 list-ingredient-food">
+          <p-table
+            [value]="foods"
+            responsiveLayout="scroll"
+            [(selection)]="selectedFoods"
+            [loading]="loadingFood"
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 3rem">
+                  <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th>#</th>
+                <th>Désignation</th>
+                <th>Prix</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-food let-rowIndex="rowIndex">
+              <tr>
+                <td><p-tableCheckbox [value]="food"></p-tableCheckbox></td>
+                <td>{{ rowIndex + 1 }}</td>
+                <td>{{ food.name }}</td>
+                <td>{{ food.amount }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <p-paginator
+            [rows]="pageSizeFood"
+            [totalRecords]="totalRecordsFood"
+            [rowsPerPageOptions]="[10, 20, 30]"
+            (onPageChange)="paginateFood($event)"
+          ></p-paginator>
+        </div>
+        <div class="container-btn col-12">
+          <button
+            pRipple
+            pButton
+            (click)="onCreate()"
+            class="p-button p-button-outlined p-button-secondary"
+          >
+            Réînitialiser le formulaire
+          </button>
+          <button
+            pRipple
+            pButton
+            class="p-button p-button-success"
+            [disabled]="!menuForm.valid && selectedFoods.length > 0"
+            (click)="saveMenu(menuForm.value)"
+          >
+            {{ saveButtonName }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="list-user">
+    <div class="header">
+      <span>Liste des menus</span>
+      <span>Consulter la liste des menus enregistrés </span>
+    </div>
+    <p-table [value]="menus" responsiveLayout="scroll" [loading]="loadingMenu">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>#</th>
+          <th>Date</th>
+          <th class="text-end">Nombre de repas</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-menu let-rowIndex="rowIndex">
+        <tr>
+          <td>{{ rowIndex + 1 }}</td>
+          <td>{{ menu.localDate | date : "dd/MM/yyyy" }}</td>
+          <td class="text-end">{{ menu.foods.length }}</td>
+          <td class="text-center">
+            <button
+              pRipple
+              pButton
+              class="p-button p-button-rounded p-button-outlined p-button-success"
+              icon="fa fa-pencil"
+              (click)="onUpdate(menu)"
+            ></button>
+            <button
+              pRipple
+              pButton
+              class="p-button p-button-rounded p-button-outlined p-button-danger"
+              icon="fa fa-trash"
+              (click)="onDelete(menu)"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <p-paginator
+      [rows]="pageSizeMenu"
+      [totalRecords]="totalRecordsMenu"
+      [rowsPerPageOptions]="[10, 20, 30]"
+      (onPageChange)="paginateMenu($event)"
+    ></p-paginator>
+  </div>
+</div>

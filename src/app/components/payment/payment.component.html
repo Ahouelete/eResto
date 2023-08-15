@@ -1,0 +1,138 @@
+<div class="payment-page">
+  <app-nav-bar-simple> </app-nav-bar-simple>
+
+  <div class="container-payment-page" *ngIf="!error?.success">
+    <div class="detail-panier">
+      <div class="detail-panier-title">
+        <span>POINT DE LA COMMANDE</span>
+      </div>
+      <hr />
+      <div class="detail-panier-content">
+        <div class="panier-icon">
+          <app-panier
+            [quantity]="quantityOrdered"
+            class="to-payment"
+          ></app-panier>
+        </div>
+        <div class="amount-panier">
+          <span>Montant à payer</span>
+          <span>{{ formatNumber(amountInvoice) }} XOF</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="payment-form">
+      <div class="payment-header">
+        <p></p>
+      </div>
+      <div class="payment-list-product">
+        <div class="header">
+          <span class="product-name">DESIGNATION</span>
+          <span class="product-amount">MONTANT</span>
+        </div>
+        <div class="content">
+          <div class="product-item" *ngFor="let p of products">
+            <span
+              >{{ p.product.product.name }}
+              <i> ({{ p.product.product.amount }}x{{ p.quantity }})</i></span
+            >
+            <span
+              >{{ formatNumber(p.product.product.amount * p.quantity) }} XOF
+              <i class="fa fa-trash" (click)="deleteProduct(p)"></i>
+            </span>
+          </div>
+        </div>
+        <div class="payment-footer">
+          <span>TOTAL</span>
+          <span>{{ formatNumber(amountInvoice) }} XOF</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mode-payment">
+      <div class="mode-payment-header">
+        <i class="fa fa-credit-card"></i>
+        <span>MODE DE PAIEMENT</span>
+      </div>
+      <div class="mode-payment-content">
+        <form [formGroup]="modePaymentForm">
+          <div class="row">
+            <div class="col-md-12 col-12">
+              <mat-form-field appearance="outline" class="col-12">
+                <mat-label>Mode de paiement</mat-label>
+                <mat-select
+                  formControlName="paymentMethod"
+                  [compareWith]="compareFn"
+                  (selectionChange)="changePaymentMethod()"
+                >
+                  <mat-option
+                    *ngFor="let mode of listModePayment"
+                    [value]="mode"
+                    >{{ mode }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div
+              class="col-md-12 col-12"
+              *ngIf="modePaymentChoice !== 'MOBILE_MONEY'"
+            >
+              <mat-form-field appearance="outline" class="col-12">
+                <mat-label>Numéro carte</mat-label>
+                <input
+                  matInput
+                  placeholder="Numero carte"
+                  formControlName="cardNumber"
+                  type="text"
+                />
+              </mat-form-field>
+            </div>
+
+            <div
+              class="col-md-12 col-12"
+              *ngIf="modePaymentChoice == 'MOBILE_MONEY'"
+            >
+              <mat-form-field appearance="outline" class="col-12">
+                <mat-label>Numéro Tél</mat-label>
+                <input
+                  matInput
+                  placeholder="Numero Tél"
+                  formControlName="tel"
+                  type="text"
+                />
+              </mat-form-field>
+            </div>
+
+            <button
+              pButton
+              [disabled]="!modePaymentForm.valid"
+              pRipple
+              label="COMMANDER ET PROCEDER AU PAIMENT"
+              class="p-button p-button-success col-12 m-b-10"
+              (click)="createOrder(modePaymentForm.value)"
+            ></button>
+            <button
+              pButton
+              pRipple
+              routerLink="/home"
+              label="RETOUR"
+              class="p-button p-button-secondary p-button-outlined col-12"
+            ></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-payment-page" *ngIf="error?.success">
+    <div class="payment-message-success">
+      <div class="alert alert-success" role="alert">
+        {{ error ? (error.success ? error.message : "") : "" }}
+      </div>
+      <img src="assets/pictures/success_img.webp" alt="" />
+      <button routerLink="/home">TERMINER</button>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

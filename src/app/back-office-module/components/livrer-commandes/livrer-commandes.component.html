@@ -1,0 +1,92 @@
+<div class="container-list-users">
+  <p><i class="fa fa-cart-plus"></i> GESTION DES COMMANDES</p>
+  <div class="list-user">
+    <div class="header">
+      <span>Liste des commandes</span>
+      <span>Consulter/Livrer/Annuler une commande</span>
+    </div>
+    <div class="filter-orders">
+      <a
+        [ngClass]="{ 'link-active': statut_order == 'TOUS' }"
+        (click)="filterInvoice('TOUS')"
+        >Toutes les commandes</a
+      >
+      <a
+        [ngClass]="{ 'link-active': statut_order == 'NON_LIVRER' }"
+        (click)="filterInvoice('NON_LIVRER')"
+        >Commandes Non livrées</a
+      >
+      <a
+        [ngClass]="{ 'link-active': statut_order == 'LIVRER' }"
+        (click)="filterInvoice('LIVRER')"
+        >Commandes Livrées</a
+      >
+      <a
+        [ngClass]="{ 'link-active': statut_order == 'ANNULER' }"
+        (click)="filterInvoice('ANNULER')"
+        >Commandes Annulées</a
+      >
+    </div>
+    <p-table [value]="invoices" responsiveLayout="scroll" [loading]="loading">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Date Commande</th>
+          <th>Montant</th>
+          <th>Nom&Prénoms Client</th>
+          <th>Email Client</th>
+          <th>Adresse Livr.</th>
+          <th>Date Livr.</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-invoice>
+        <tr>
+          <td>{{ invoice.date | date : "dd/MM-yyy" }}</td>
+          <td>{{ invoice?.payment?.transaction?.amount }}</td>
+          <td>
+            {{
+              invoice?.customer?.user?.person?.lastName +
+                " " +
+                invoice?.customer?.user?.person?.firstName
+            }}
+          </td>
+          <td>{{ invoice?.customer?.user?.person?.email }}</td>
+          <td>{{ invoice?.dateLiv | date : "dd/MM-yyy" }}</td>
+          <td>
+            <span
+              [ngClass]="{
+                'card-error': invoice.status == 'ANNULER',
+                'card-success': invoice.status == 'LIVRER',
+                'card-pending': invoice.status == 'NON_LIVRER'
+              }"
+              >{{ invoice.status }}</span
+            >
+          </td>
+          <td>
+            <button
+              pRipple
+              pButton
+              class="p-button p-button-rounded p-button-outlined p-button-success"
+              icon="fa fa-pencil"
+              (click)="onDeliver(invoice)"
+            ></button>
+            <button
+              pRipple
+              pButton
+              class="p-button p-button-rounded p-button-outlined p-button-danger"
+              icon="fa fa-trash"
+              (click)="onCancel(invoice)"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <p-paginator
+      [rows]="pageSize"
+      [totalRecords]="totalRecords"
+      [rowsPerPageOptions]="[10, 20, 30]"
+      (onPageChange)="paginate($event)"
+    ></p-paginator>
+  </div>
+</div>

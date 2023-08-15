@@ -1,0 +1,141 @@
+<div class="container-list-users">
+  <p><i class="fa fa-users"></i> GESTION DES CLIENTS</p>
+  <div class="user-form">
+    <form [formGroup]="customerForm">
+      <div class="header">
+        <span>Enregistrer un client</span>
+        <span>Ajouter ou modifier un client</span>
+      </div>
+      <div class="row">
+        <div class="col-md-4 col-12">
+          <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Nom</mat-label>
+            <input
+              matInput
+              placeholder="Nom"
+              type="text"
+              formControlName="lastName"
+              oninput="this.value = this.value.toUpperCase()"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 col-12">
+          <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Prénoms</mat-label>
+            <input
+              matInput
+              placeholder="Prénoms"
+              formControlName="firstName"
+              oninput="this.value = this.value.toUpperCase()"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 col-12">
+          <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              placeholder="Email"
+              formControlName="email"
+              type="text"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-6 col-12">
+          <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Adresse</mat-label>
+            <input
+              matInput
+              placeholder="Adresse"
+              formControlName="adress"
+              oninput="this.value = this.value.toUpperCase()"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-6 col-12">
+          <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Roles</mat-label>
+            <mat-select
+              multiple
+              formControlName="roles"
+              [compareWith]="compareFn"
+            >
+              <mat-option *ngFor="let role of roles" [value]="role">{{
+                role.name
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="container-btn col-12">
+          <button
+            pRipple
+            pButton
+            (click)="onCreate()"
+            class="p-button p-button-outlined p-button-secondary"
+          >
+            Réînitialiser
+          </button>
+          <button
+            pRipple
+            pButton
+            class="p-button p-button-success"
+            [disabled]="!customerForm.valid"
+            (click)="onSave(customerForm.value)"
+          >
+            {{ saveButtonName }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="list-user">
+    <div class="header">
+      <span>Liste des clients</span>
+      <span>Consulter la liste des clients </span>
+    </div>
+    <p-table [value]="customers" responsiveLayout="scroll" [loading]="loading">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>#</th>
+          <th>Nom</th>
+          <th>Prénoms</th>
+          <th>Username</th>
+          <th>Rôles</th>
+          <th>Adresse</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-customer let-rowIndex="rowIndex">
+        <tr>
+          <td>{{ rowIndex + 1 }}</td>
+          <td>{{ customer?.user?.person?.lastName }}</td>
+          <td>{{ customer?.user?.person?.firstName }}</td>
+          <td>{{ customer?.user?.username }}</td>
+          <td>{{ getRoleName(customer?.user?.roles) }}</td>
+          <td>{{ customer?.adress }}</td>
+          <td>
+            <button
+              pRipple
+              pButton
+              class="p-button p-button-rounded p-button-outlined p-button-success"
+              icon="fa fa-pencil"
+              (click)="onUpdate(customer)"
+            ></button>
+            <button
+              pRipple
+              pButton
+              class="p-button p-button-rounded p-button-outlined p-button-danger"
+              icon="fa fa-trash"
+              (click)="onDelete(customer)"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        <div class="p-d-flex p-ai-center p-jc-between">
+          Au total il y a {{ totalRecords }} enregistrements.
+        </div>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

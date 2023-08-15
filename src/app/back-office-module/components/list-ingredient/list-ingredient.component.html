@@ -1,0 +1,68 @@
+<div class="container-list-users">
+  <p><i class="fa fa-pagelines"></i> GESTION DES INGREDIENTS</p>
+  <div class="user-form">
+    <form>
+      <div class="header">
+        <span>Enregistrer un ingredient</span>
+        <span>Ajouter ou modifier un ingredient</span>
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-12">
+          <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Désignation</mat-label>
+            <input matInput placeholder="Désignation" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-6 col-12">
+          <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Choisir une nourriture</mat-label>
+            <mat-select multiple>
+              <mat-option *ngFor="let role of foods" [value]="role">{{
+                role
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="container-btn col-12">
+          <button
+            pRipple
+            pButton
+            class="p-button p-button-outlined p-button-secondary"
+          >
+            Réînitialiser
+          </button>
+          <button pRipple pButton class="p-button p-button-success">
+            Enregistrer
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="list-user">
+    <div class="header">
+      <span>Liste des ingredients</span>
+      <span>Consulter la liste des ingredients </span>
+    </div>
+    <p-table [value]="ingredients" responsiveLayout="scroll">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Désignation</th>
+          <th>Nourriture</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>{{ product.code }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.category }}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        <div class="p-d-flex p-ai-center p-jc-between">
+          Au total il y a {{ totalRecords }} enregistrements.
+        </div>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

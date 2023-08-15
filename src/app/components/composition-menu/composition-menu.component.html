@@ -1,0 +1,115 @@
+<div class="composition-menu-page">
+  <app-nav-bar-simple></app-nav-bar-simple>
+
+  <div class="feature-composition-menu">
+    <div class="breadcrumb">
+      <a routerLink="/home"><i class="fa fa-home"></i>Accueil</a>
+      <span>/</span>
+      <a disabled="true">Menu</a>
+    </div>
+    <div class="container-details-menu">
+      <div class="details-menu" *ngIf="food">
+        <p class="name-and-price-menu">
+          <span>{{ food.name }}</span>
+          <span>{{ formatNumber(food.amount) }} XOF</span>
+        </p>
+        <p class="title">INGREDIENTS</p>
+        <ol>
+          <li *ngFor="let ingre of food.ingredients">
+            {{ ingre.name }}
+          </li>
+        </ol>
+
+        <div class="container-btn-detail-menu">
+          <button class="" routerLink="/home">RETOUR</button>
+          <button class="" (click)="addNewProductToPanier(food, 'FOOD')">
+            COMMANDER
+          </button>
+        </div>
+      </div>
+      <img src="assets/pictures/meat1.jpg" alt="" />
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>
+
+<p-dialog
+  class="no-header"
+  header="AJOUTER AU PANIER"
+  [(visible)]="displayBasic"
+  [style]="{ minWidth: '300px', width: '30vw' }"
+  *ngIf="newProductToPanier"
+>
+  <div class="container-panier">
+    <div class="header">
+      <span> <i class="fa fa-cart-plus"></i>AJOUTER AU PANIER</span>
+    </div>
+
+    <div class="detail-product">
+      <span class="product-name">{{ newProductToPanier.product?.name }}</span>
+      <span class="product-price"
+        >{{ formatNumber(newProductToPanier.product?.amount) }} XOF</span
+      >
+    </div>
+
+    <div class="panier-form">
+      <form [formGroup]="panierForm">
+        <div class="row">
+          <div class="col-6">
+            <mat-form-field appearance="outline" class="col-12">
+              <mat-label>Quantité</mat-label>
+              <input
+                formControlName="quantity"
+                matInput
+                placeholder="Quantité"
+                value="1"
+                type="number"
+                min="1"
+                (ngModelChange)="
+                  changeQuantity(newProductToPanier.product?.amount)
+                "
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-6">
+            <mat-form-field appearance="outline" class="col-12">
+              <mat-label>Montant</mat-label>
+              <input matInput placeholder="Montant" formControlName="amount" />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <button
+              pRipple
+              pButton
+              class="p-button p-button-success col-12 m-b-10 p-button-outlined"
+              label="AJOUTER ET QUITTER"
+              [disabled]="!panierForm.valid"
+              (click)="addProductInPanier(panierForm.value, 'CANCEL')"
+            ></button>
+          </div>
+          <div class="col-12">
+            <button
+              pRipple
+              pButton
+              class="p-button p-button-success col-12 m-b-10"
+              label="AJOUTER ET PROCEDER AU PAIEMENT"
+              [disabled]="!panierForm.valid"
+              (click)="addProductInPanier(panierForm.value, 'PAYMENT')"
+            ></button>
+          </div>
+          <div class="col-12">
+            <button
+              (click)="displayBasic = false"
+              pRipple
+              pButton
+              class="p-button p-button-danger col-12"
+              label="QUITTER"
+            ></button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</p-dialog>

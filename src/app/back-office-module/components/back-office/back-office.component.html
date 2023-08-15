@@ -1,0 +1,57 @@
+<div class="back-office-page">
+  <app-nav-bar-simple></app-nav-bar-simple>
+  <div class="container-layout-back-office">
+    <div class="side-menu">
+      <a routerLink="/back-office/record-menu" routerLinkActive="link-active">
+        <i class="fa fa-th-large"> </i>Enregistrer un menu</a
+      >
+      <a
+        routerLink="/back-office/livrer-commandes"
+        routerLinkActive="link-active"
+        ><i class="fa fa-cart-plus"> </i>Livrer une commande</a
+      >
+      <a routerLink="/back-office/list-meal" routerLinkActive="link-active">
+        <i class="fa fa-cutlery"> </i>Liste des repas</a
+      >
+      <!-- <a
+        routerLink="/back-office/list-ingredient"
+        routerLinkActive="link-active"
+      >
+        <i class="fa fa-pagelines"> </i>Liste des ingredients</a
+      > -->
+      <a routerLink="/back-office/list-drink" routerLinkActive="link-active">
+        <i class="fa fa-beer"> </i>Liste des boissons</a
+      >
+      <a routerLink="/back-office/list-customer" routerLinkActive="link-active">
+        <i class="fa fa-user-o"> </i> Liste des clients</a
+      >
+      <a routerLink="/back-office/list-payment" routerLinkActive="link-active">
+        <i class="fa fa-credit-card"> </i> Liste des paiements</a
+      >
+      <a routerLink="/back-office/list-user" routerLinkActive="link-active">
+        <i class="fa fa-users"> </i> Liste des utilisateurs</a
+      >
+    </div>
+    <div class="container-feature">
+      <app-list-drink *ngIf="routeActivated == 'list-drink'"></app-list-drink>
+      <app-list-ingredient
+        *ngIf="routeActivated == 'list-ingredient'"
+      ></app-list-ingredient>
+      <app-list-meal *ngIf="routeActivated == 'list-meal'"></app-list-meal>
+      <app-list-customer
+        *ngIf="routeActivated == 'list-customer'"
+      ></app-list-customer>
+      <app-list-payment
+        *ngIf="routeActivated == 'list-payment'"
+      ></app-list-payment>
+      <app-list-users *ngIf="routeActivated == 'list-user'"></app-list-users>
+      <app-enregistrer-menu
+        *ngIf="routeActivated == 'record-menu'"
+      ></app-enregistrer-menu>
+      <app-livrer-commandes
+        *ngIf="routeActivated == 'livrer-commandes'"
+      ></app-livrer-commandes>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

@@ -1,0 +1,224 @@
+<div class="login-page">
+  <app-nav-bar-simple></app-nav-bar-simple>
+
+  <!-- LOGIN -->
+
+  <div class="container-login-form" *ngIf="routeUrl == 'login'">
+    <h1>Espace de connexion</h1>
+
+    <div class="login-form">
+      <div
+        class="alert alert-{{ error.success ? 'success' : 'danger' }}"
+        role="alert"
+        *ngIf="error && error.success !== undefined && error.success !== null"
+      >
+        {{ error.message }}
+      </div>
+
+      <form [formGroup]="loginForm">
+        <div class="">
+          <mat-form-field appearance="outline">
+            <mat-label>Nom d'utilisateur</mat-label>
+            <input
+              matInput
+              placeholder="Nom d'utilisateur"
+              type="text"
+              formControlName="username"
+            />
+          </mat-form-field>
+        </div>
+        <div class="">
+          <mat-form-field appearance="outline">
+            <mat-label>Mot de passe</mat-label>
+            <input
+              matInput
+              placeholder="Mot de passe"
+              type="password"
+              formControlName="password"
+            />
+          </mat-form-field>
+        </div>
+
+        <button
+          mat-flat-button
+          color="primary"
+          [disabled]="!loginForm.valid"
+          (click)="login(loginForm.value)"
+        >
+          {{ saveButtonName }}
+        </button>
+        <span class="libelle-signout">OR</span>
+        <button
+          mat-flat-button
+          class="signout"
+          routerLink="/signup"
+          [disabled]="
+            saveButtonName == 'INSCRIPTION EN COURS ...' ||
+            saveButtonName == 'CONNEXION EN COURS ...' ||
+            saveButtonName == 'REINITIALISATION EN COURS ...'
+          "
+        >
+          S'INSCRIRE
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- SIGNUP -->
+  <div class="container-login-form" *ngIf="routeUrl == 'signup'">
+    <h1>Inscrivez vous ici</h1>
+    <div class="login-form">
+      <div
+        class="alert alert-{{ error.success ? 'success' : 'danger' }}"
+        role="alert"
+        *ngIf="error && error.success !== undefined && error.success !== null"
+      >
+        {{ error.message }}
+      </div>
+
+      <form [formGroup]="signupForm">
+        <div class="">
+          <mat-form-field appearance="outline">
+            <mat-label>Nom</mat-label>
+            <input
+              matInput
+              placeholder="Nom"
+              type="text"
+              formControlName="lastName"
+              oninput="this.value = this.value.toUpperCase()"
+            />
+          </mat-form-field>
+        </div>
+        <div class="">
+          <mat-form-field appearance="outline">
+            <mat-label>Prénoms</mat-label>
+            <input
+              matInput
+              placeholder="Prénoms"
+              type="text"
+              formControlName="firstName"
+              oninput="this.value = this.value.toUpperCase()"
+            />
+          </mat-form-field>
+        </div>
+        <div class="">
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              placeholder="Email"
+              type="text"
+              formControlName="email"
+            />
+          </mat-form-field>
+        </div>
+        <div class="">
+          <mat-form-field appearance="outline">
+            <mat-label>Adresse</mat-label>
+            <input
+              matInput
+              placeholder="Adresse"
+              type="text"
+              formControlName="adress"
+            />
+          </mat-form-field>
+        </div>
+        <button
+          mat-flat-button
+          color="primary"
+          [disabled]="!signupForm.valid"
+          (click)="signup(signupForm.value)"
+        >
+          {{ saveButtonName }}
+        </button>
+        <span class="libelle-signout">OR</span>
+        <button
+          mat-flat-button
+          class="signout"
+          routerLink="/login"
+          [disabled]="
+            saveButtonName == 'INSCRIPTION EN COURS ...' ||
+            saveButtonName == 'CONNEXION EN COURS ...' ||
+            saveButtonName == 'REINITIALISATION EN COURS ...'
+          "
+        >
+          CONNEXION
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- RESET PASSSWORD -->
+  <div class="container-login-form" *ngIf="routeUrl == 'reset-password'">
+    <h1>Réînitialiser votre mot de passe</h1>
+
+    <div class="login-form">
+      <div
+        class="alert alert-{{ error.success ? 'success' : 'danger' }}"
+        role="alert"
+        *ngIf="error && error.success !== undefined && error.success !== null"
+      >
+        {{ error.message }}
+      </div>
+
+      <form [formGroup]="resetPasswordForm">
+        <div class="">
+          <mat-form-field appearance="outline">
+            <mat-label>Entrer nom d'utilisateur</mat-label>
+            <input
+              matInput
+              placeholder="Entrer nom d'utilisateur"
+              type="text"
+              formControlName="username"
+              oninput="this.value = this.value.toUpperCase()"
+            />
+          </mat-form-field>
+        </div>
+        <div class="">
+          <mat-form-field appearance="outline">
+            <mat-label>Entrer mot de passe</mat-label>
+            <input
+              matInput
+              placeholder="Entrer mot de passe"
+              type="password"
+              formControlName="password"
+            />
+          </mat-form-field>
+        </div>
+        <div class="">
+          <mat-form-field appearance="outline">
+            <mat-label>Confirmer mot de passe</mat-label>
+            <input
+              matInput
+              placeholder="Confirmer mot de passe"
+              type="password"
+              formControlName="confirmPassword"
+            />
+          </mat-form-field>
+        </div>
+        <button
+          mat-flat-button
+          color="primary"
+          [disabled]="!resetPasswordForm.valid"
+          (click)="resetPassWord(resetPasswordForm.value)"
+        >
+          {{ saveButtonName }}
+        </button>
+        <span class="libelle-signout">OR</span>
+        <button
+          mat-flat-button
+          class="signout"
+          routerLink="/login"
+          [disabled]="
+            saveButtonName == 'INSCRIPTION EN COURS ...' ||
+            saveButtonName == 'CONNEXION EN COURS ...' ||
+            saveButtonName == 'REINITIALISATION EN COURS ...'
+          "
+        >
+          CONNEXION
+        </button>
+      </form>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>
